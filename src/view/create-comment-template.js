@@ -1,14 +1,14 @@
 import { formatStringToDateWithTime } from '../utils.js';
 
-const createCommentTemplate = (comments) => `<li class="film-details__comment">
+const createCommentTemplate = ({emotion, comment, author, date}) => `<li class="film-details__comment">
         <span class="film-details__comment-emoji">
-          <img src="./images/emoji/${comments.emotion}.png" width="55" height="55" alt="emoji-smile">
+          <img src="./images/emoji/${emotion}.png" width="55" height="55" alt="${emotion}">
         </span>
         <div>
-          <p class="film-details__comment-text">${comments.comment}</p>
+          <p class="film-details__comment-text">${comment}</p>
           <p class="film-details__comment-info">
-            <span class="film-details__comment-author">${comments.author}</span>
-            <span class="film-details__comment-day">${formatStringToDateWithTime(comments.date)}</span>
+            <span class="film-details__comment-author">${author}</span>
+            <span class="film-details__comment-day">${formatStringToDateWithTime(date)}</span>
             <button class="film-details__comment-delete">Delete</button>
           </p>
         </div>

@@ -4,19 +4,31 @@ import{formatMinutesToTime} from '../utils.js';
 import { createCommentTemplate } from './create-comment-template.js';
 import { createCommentNextTemplate } from './create-comment-next-template.js';
 
-const createFilmCardPopupTemplate = ({filmInfo, comments}) =>`
-<div class="film-details__inner"
- <div class="film-details__top-container">
-  <div class="film-details__close">
-    <button class="film-details__close-btn" type="button">close</button>
-  </div>
-  <div class="film-details__info-wrap">
-    <div class="film-details__poster">
-      <img class="film-details__poster-img" src=${filmInfo.poster} alt="${filmInfo.alternativeTitle}">
-      <p class="film-details__age">${filmInfo.ageRating}+</p>
-    </div>
-    <div class="film-details__info">
-      <div class="film-details__info-head">
+const generateGenreTitle = (genres) =>
+  (genres.length > 1)
+    ? 'Genres'
+    : 'Genre';
+
+const generateGenreList = (genres) =>
+  genres.map((genreItem) =>
+    `<span class="film-details__genre">${genreItem}</span>`
+  ).join('');
+
+const createFilmCardPopupTemplate = ({filmInfo}, comments) =>`
+<section class="film-details">
+   <div class="film-details__inner"
+     <div class="film-details__top-container">
+         <div class="film-details__close">
+          <button class="film-details__close-btn" type="button">close</button>
+         </div>
+
+       <div class="film-details__info-wrap">
+       <div class="film-details__poster">
+       <img class="film-details__poster-img" src=${filmInfo.poster} alt="${filmInfo.alternativeTitle}">
+       <p class="film-details__age">${filmInfo.ageRating}+</p>
+       </div>
+        <div class="film-details__info">
+        <div class="film-details__info-head">
         <div class="film-details__title-wrap">
           <h3 class="film-details__title">${filmInfo.title}</h3>
           <p class="film-details__title-original">${filmInfo.title}</p>
@@ -24,8 +36,8 @@ const createFilmCardPopupTemplate = ({filmInfo, comments}) =>`
         <div class="film-details__rating">
           <p class="film-details__total-rating">${filmInfo.totalRating}</p>
         </div>
-      </div>
-      <table class="film-details__table">
+       </div>
+       <table class="film-details__table">
         <tr class="film-details__row">
           <td class="film-details__term">Director</td>
           <td class="film-details__cell">${filmInfo.director}</td>
@@ -51,34 +63,34 @@ const createFilmCardPopupTemplate = ({filmInfo, comments}) =>`
           <td class="film-details__cell">${filmInfo.release.releaseCountry}</td>
         </tr>
         <tr class="film-details__row">
-          <td class="film-details__term">Genres</td>
+          <td class="film-details__term">${generateGenreTitle(filmInfo.genre)}</td>
           <td class="film-details__cell">
-            <span class="film-details__genre">${filmInfo.genre}</span>
+            <span class="film-details__genre">${generateGenreList(filmInfo.genre)}</span>
             </td>
         </tr>
-      </table>
-      <p class="film-details__film-description">
-      ${filmInfo.description}
-      </p>
+        </table>
+        <p class="film-details__film-description">
+        ${filmInfo.description}
+        </p>
+        </div>
+        </div>
+
+         <section class="film-details__controls">
+          <button type="button" class="film-details__control-button film-details__control-button--watchlist" id="watchlist" name="watchlist">Add to watchlist</button>
+         <button type="button" class="film-details__control-button film-details__control-button--active film-details__control-button--watched" id="watched" name="watched">Already watched</button>
+          <button type="button" class="film-details__control-button film-details__control-button--favorite" id="favorite" name="favorite">Add to favorites</button>
+         </section>
     </div>
-  </div>
-
-  <section class="film-details__controls">
-    <button type="button" class="film-details__control-button film-details__control-button--watchlist" id="watchlist" name="watchlist">Add to watchlist</button>
-    <button type="button" class="film-details__control-button film-details__control-button--active film-details__control-button--watched" id="watched" name="watched">Already watched</button>
-    <button type="button" class="film-details__control-button film-details__control-button--favorite" id="favorite" name="favorite">Add to favorites</button>
-  </section>
-
-  <div class="film-details__bottom-container">
-  <section class="film-details__comments-wrap">
-    <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
-     ${createCommentTemplate(comments)}
-     ${createCommentNextTemplate(comments)}
+        <div class="film-details__bottom-container">
+         <section class="film-details__comments-wrap">
+            <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
+           ${createCommentTemplate(comments)}
+           ${createCommentNextTemplate(comments)}
     
-  </section>
-  </div>
-  </div>
-</div>`;
+          </section>
+       </div>
+      </div>
+  </section>`;
 
 export default class FilmCardPopupView {
   constructor(film, comments) {

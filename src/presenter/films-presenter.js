@@ -29,6 +29,6 @@ export default class FilmsPresenter {
     render(new ShowMoreView(), this.filmsListComponent.getElement());
 
     const comments = [...this.commentsModel.get(this.films[0])];
-    render(new FilmCardPopupView(this.films[0], comments), this.filmsContainer.parentElement);
+    render(new FilmCardPopupView(this.films[0], comments), this.filmsContainer);
   }
 }
