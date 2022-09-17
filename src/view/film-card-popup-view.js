@@ -1,8 +1,8 @@
 import {createElement} from '../render.js';
 import { formatStringToDate } from '../utils.js';
 import{formatMinutesToTime} from '../utils.js';
-import { createCommentTemplate } from './create-comment-template.js';
-import { createCommentNextTemplate } from './create-comment-next-template.js';
+import { createCommentTemplate } from '../view/create-comment-template.js';
+import { createCommentNextTemplate } from '../view/create-comment-next-template.js';
 
 const generateGenreTitle = (genres) =>
   (genres.length > 1)
