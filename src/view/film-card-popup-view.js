@@ -2,7 +2,6 @@ import {createElement} from '../render.js';
 import { formatStringToDate } from '../utils.js';
 import{formatMinutesToTime} from '../utils.js';
 import { createCommentTemplate } from '../view/create-comment-template.js';
-import { createCommentNextTemplate } from '../view/create-comment-next-template.js';
 
 const generateGenreTitle = (genres) =>
   (genres.length > 1)
@@ -13,6 +12,8 @@ const generateGenreList = (genres) =>
   genres.map((genreItem) =>
     `<span class="film-details__genre">${genreItem}</span>`
   ).join('');
+
+const createCommentNextTemplate = (comments) => `${comments.map(createCommentTemplate).join('')} `;
 
 const createFilmCardPopupTemplate = ({filmInfo}, comments) =>`
 <section class="film-details">
@@ -81,16 +82,19 @@ const createFilmCardPopupTemplate = ({filmInfo}, comments) =>`
           <button type="button" class="film-details__control-button film-details__control-button--favorite" id="favorite" name="favorite">Add to favorites</button>
          </section>
     </div>
+
         <div class="film-details__bottom-container">
          <section class="film-details__comments-wrap">
             <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
-           ${createCommentTemplate(comments)}
+
+            <ul class="film-details__comments-list">
+            ${createCommentTemplate(comments)}
            ${createCommentNextTemplate(comments)}
-    
-          </section>
-       </div>
-      </div>
-  </section>`;
+           </ul>
+  </section>
+  </div>
+  </div>
+</section>`;
 
 export default class FilmCardPopupView {
   constructor(film, comments) {
