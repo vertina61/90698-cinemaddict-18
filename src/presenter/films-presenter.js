@@ -7,28 +7,76 @@ import FilmCardPopupView from '../view/film-card-popup-view.js';
 import {render} from '../render.js';
 
 export default class FilmsPresenter {
-  filmsComponent = new FilmsView();
-  filmsListComponent = new FilmsListView();
-  filmsListContainer = new FilmsListContainerView();
+  #filmsComponent = new FilmsView();
+  #filmsListComponent = new FilmsListView();
+  #filmsListContainer = new FilmsListContainerView();
+  #ShowMoreView = new ShowMoreView ();
+  #filmCardPopupComponent = null;
+
+  #filmsContainer = null;
+  #filmsModel = null;
+  #commentsModel = null;
+
+  #films = [];
 
   init(filmsContainer, filmsModel, commentsModel) {
-    this.filmsContainer = filmsContainer;
-    this.filmsModel = filmsModel;
-    this.commentsModel = commentsModel;
+    this.#filmsContainer = filmsContainer;
+    this.#filmsModel = filmsModel;
+    this.#commentsModel = commentsModel;
 
-    this.films = [...filmsModel.get()];
+    this.#films = [...this.#filmsModel.get()];
 
-    render(this.filmsComponent, this.filmsContainer);
-    render(this.filmsListComponent, this.filmsComponent.getElement());
-    render(this.filmsListContainer, this.filmsListComponent.getElement());
+    render(this.#filmsComponent, this.#filmsContainer);
+    render(this.#filmsListComponent, this.#filmsComponent.element);
+    render(this.#filmsListContainer, this.#filmsListComponent.element);
 
-    for (let i = 0; i < this.films.length; i++) {
-      render(new FilmCardView(this.films[i]), this.filmsListContainer.getElement());
-    }
+    this.#films.forEach((film) => {
+      this.#renderFilm(film, this.#filmsListContainer);
+    });
 
-    render(new ShowMoreView(), this.filmsListComponent.getElement());
-
-    const comments = [...this.commentsModel.get(this.films[0])];
-    render(new FilmCardPopupView(this.films[0], comments), this.filmsContainer);
+    render(this.#ShowMoreView, this.#filmsListComponent.element);
   }
+
+  #renderFilm(film, filmsContainer) {
+    const filmCardViewComponent = new FilmCardView(film);
+    const linkFilmCardElement = filmCardViewComponent.element.querySelector('a');
+    linkFilmCardElement.addEventListener('click', () => {
+      this.#addFilmCardPopupComponent(film);
+      document.addEventListener('keydown', this.#onEscKeyDown);
+    });
+
+    render(filmCardViewComponent, filmsContainer.element);
+  }
+
+  #renderFilmCardPopup(film) {
+    const comments = [...this.#commentsModel.get(film)];
+    this.#filmCardPopupComponent = new FilmCardPopupView(film, comments);
+    const closeButtonFilmDetailsElement = this.#filmCardPopupComponent.element.querySelector('.film-details__close-btn');
+
+    closeButtonFilmDetailsElement.addEventListener('click', () => {
+      this.#removeFilmCardPopupComponent();
+      document.removeEventListener('keydown', this.onEscKeyDown);
+    });
+    render(this.#filmCardPopupComponent, this.#filmsContainer.parentElement);
+  }
+
+  #addFilmCardPopupComponent = (film) => {
+    this.#renderFilmCardPopup(film);
+    document.body.classList.add('hide-overflow');
+  };
+
+  #removeFilmCardPopupComponent = () => {
+    this.#filmCardPopupComponent.element.remove();
+    this.#filmCardPopupComponent = null;
+    document.body.classList.remove('hide-overflow');
+  };
+
+  #onEscKeyDown = (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      evt.preventDefault();
+      this.#removeFilmCardPopupComponent();
+      document.removeEventListener('keydown', this.#onEscKeyDown);
+    }
+  };
 }
+
