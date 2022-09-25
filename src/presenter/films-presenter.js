@@ -12,13 +12,14 @@ export default class FilmsPresenter {
   #filmsListComponent = new FilmsListView();
   #filmsListContainer = new FilmsListContainerView();
   #showMoreView = new ShowMoreView ();
-  #filmCardPopupComponent = null;
 
+  #filmCardPopupComponent = null;
   #filmsContainer = null;
   #filmsModel = null;
   #commentsModel = null;
 
   #films = [];
+
   #renderedFilmCount = FILM_COUNT_PER_STEP;
 
   constructor(filmsContainer, filmsModel, commentsModel) {
@@ -29,6 +30,7 @@ export default class FilmsPresenter {
 
   init = () => {
     this.#films = [...this.#filmsModel.get()];
+    render(this.#filmsComponent, this.#filmsContainer);
     render(this.#filmsListComponent, this.#filmsComponent.element);
     render(this.#filmsListContainer, this.#filmsListComponent.element);
 
@@ -41,7 +43,7 @@ export default class FilmsPresenter {
     }
   };
 
-  #renderFilm(film, container) {
+  #renderFilm(film, filmsContainer) {
     const filmCardViewComponent = new FilmCardView(film);
     const linkFilmCardElement = filmCardViewComponent.element.querySelector('a');
     linkFilmCardElement.addEventListener('click', () => {
@@ -49,7 +51,7 @@ export default class FilmsPresenter {
       document.addEventListener('keydown', this.#onEscKeyDown);
     });
 
-    render(filmCardViewComponent, container);
+    render(filmCardViewComponent, filmsContainer);
   }
 
   #renderFilmCardPopup(film) {
