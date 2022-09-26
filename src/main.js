@@ -16,5 +16,5 @@ render(new ProfileRatingView(), siteHeaderElement);
 render(new NavigationView(), siteMainElement);
 render(new SortView(), siteMainElement);
 
-const filmsPresenter = new FilmsPresenter();
-filmsPresenter.init(siteMainElement, filmsModel, commentsModel);
+const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, commentsModel);
+filmsPresenter.init();

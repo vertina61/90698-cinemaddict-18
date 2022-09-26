@@ -1,6 +1,7 @@
 const NAME_COUNT = 2;
 const MAX_COMMENTS_ON_FILM = 5;
-const FILM_COUNT = 5;
+const FILM_COUNT = 18;
+const FILM_COUNT_PER_STEP = 5;
 
 const GenreCount = {
   MIN:1,
@@ -86,4 +87,4 @@ const titles = [
   'Why Stop Now?',
 ];
 
-export {FILM_COUNT, NAME_COUNT, MAX_COMMENTS_ON_FILM, description, comment, countries, DaysDuration, YearsDuration, titles, surnames, names, posters, Rating, AgeRating, Runtime, GenreCount, genres, emotions};
+export {FILM_COUNT, NAME_COUNT, MAX_COMMENTS_ON_FILM, FILM_COUNT_PER_STEP, description, comment, countries, DaysDuration, YearsDuration, titles, surnames, names, posters, Rating, AgeRating, Runtime, GenreCount, genres, emotions};
