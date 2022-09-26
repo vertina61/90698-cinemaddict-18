@@ -4,6 +4,7 @@ import FilmsView from '../view/films-view.js';
 import FilmsListView from '../view/films-list-view.js';
 import FilmsListContainerView from '../view/films-list-container-view.js';
 import FilmCardPopupView from '../view/film-card-popup-view.js';
+import FilmListEmptyView from '../view/film-list-empty-view.js';
 import {render} from '../render.js';
 import { FILM_COUNT_PER_STEP, FILM_COUNT} from '../mock/const.js';
 
@@ -30,16 +31,21 @@ export default class FilmsPresenter {
 
   init = () => {
     this.#films = [...this.#filmsModel.get()];
-    render(this.#filmsComponent, this.#filmsContainer);
-    render(this.#filmsListComponent, this.#filmsComponent.element);
-    render(this.#filmsListContainer, this.#filmsListComponent.element);
 
-    this.#films.slice(0, this.#renderedFilmCount).forEach((film) => {
-      this.#renderFilm(film, this.#filmsListContainer.element);
-    });
-    if (this.#renderedFilmCount < FILM_COUNT) {
-      render(this.#showMoreView, this.#filmsListComponent.element);
-      this.#showMoreView.element.addEventListener('click', this.#onShowFilmButtonMore);
+    if(this.#films.length === 0){
+      render(new FilmListEmptyView(), this.#filmsContainer);
+    } else {
+      render(this.#filmsComponent, this.#filmsContainer);
+      render(this.#filmsListComponent, this.#filmsComponent.element);
+      render(this.#filmsListContainer, this.#filmsListComponent.element);
+
+      this.#films.slice(0, this.#renderedFilmCount).forEach((film) => {
+        this.#renderFilm(film, this.#filmsListContainer.element);
+      });
+      if (this.#renderedFilmCount < FILM_COUNT) {
+        render(this.#showMoreView, this.#filmsListComponent.element);
+        this.#showMoreView.element.addEventListener('click', this.#onShowFilmButtonMore);
+      }
     }
   };
 
