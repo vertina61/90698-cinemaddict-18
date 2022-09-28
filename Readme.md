@@ -1,7 +1,7 @@
 # Проект «Киноман»
 
 * Студент: [Наталья Володина](https://up.htmlacademy.ru/ecmascript/18/user/90698).
-* Наставник: [Сергей Рожков](https://htmlacademy.ru/profile/id1069033).
+* Наставник: [Александр Тимоновский](https://htmlacademy.ru/profile/id768125).
 
 ---
 

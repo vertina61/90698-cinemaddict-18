@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { formatStringToDate } from '../utils.js';
 import{formatMinutesToTime} from '../utils.js';
 import { createCommentTemplate } from '../view/create-comment-template.js';
@@ -96,12 +96,12 @@ const createFilmCardPopupTemplate = ({filmInfo}, comments) =>`
   </div>
 </section>`;
 
-export default class FilmCardPopupView {
-  #element = null;
+export default class FilmCardPopupView extends AbstractView {
   #film = null;
   #comments = null;
 
   constructor(film, comments) {
+    super();
     this.#film = film;
     this.#comments = comments;
   }
@@ -110,15 +110,13 @@ export default class FilmCardPopupView {
     return createFilmCardPopupTemplate(this.#film, this.#comments);
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
+  closeBtnClickHandler = (callback) => {
+    this._callback.click = callback;
+    this.element.querySelector('.film-details__close-btn').addEventListener('click', this.#clickHandler);
+  };
 
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
-  }
+  #clickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.click();
+  };
 }

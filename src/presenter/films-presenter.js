@@ -5,7 +5,7 @@ import FilmsListView from '../view/films-list-view.js';
 import FilmsListContainerView from '../view/films-list-container-view.js';
 import FilmCardPopupView from '../view/film-card-popup-view.js';
 import FilmListEmptyView from '../view/film-list-empty-view.js';
-import {render} from '../render.js';
+import { render, remove } from '../framework/render.js';
 import { FILM_COUNT_PER_STEP, FILM_COUNT} from '../mock/const.js';
 
 export default class FilmsPresenter {
@@ -44,28 +44,24 @@ export default class FilmsPresenter {
       });
       if (this.#renderedFilmCount < FILM_COUNT) {
         render(this.#showMoreView, this.#filmsListComponent.element);
-        this.#showMoreView.element.addEventListener('click', this.#onShowFilmButtonMore);
+        this.#showMoreView.setClickHandler(this.#onShowFilmButtonMore);
       }
     }
   };
 
   #renderFilm(film, filmsContainer) {
     const filmCardViewComponent = new FilmCardView(film);
-    const linkFilmCardElement = filmCardViewComponent.element.querySelector('a');
-    linkFilmCardElement.addEventListener('click', () => {
+    filmCardViewComponent.setFilmClickHandler(() => {
       this.#addFilmCardPopupComponent(film);
       document.addEventListener('keydown', this.#onEscKeyDown);
     });
-
     render(filmCardViewComponent, filmsContainer);
   }
 
   #renderFilmCardPopup(film) {
     const comments = [...this.#commentsModel.get(film)];
     this.#filmCardPopupComponent = new FilmCardPopupView(film, comments);
-    const closeButtonFilmDetailsElement = this.#filmCardPopupComponent.element.querySelector('.film-details__close-btn');
-
-    closeButtonFilmDetailsElement.addEventListener('click', () => {
+    this.#filmCardPopupComponent.closeBtnClickHandler(() => {
       this.#removeFilmCardPopupComponent();
       document.removeEventListener('keydown', this.onEscKeyDown);
     });
@@ -91,9 +87,7 @@ export default class FilmsPresenter {
     }
   };
 
-  #onShowFilmButtonMore = (evt)=> {
-    evt.preventDefault();
-
+  #onShowFilmButtonMore = ()=> {
     this.#films
       .slice(this.#renderedFilmCount, this.#renderedFilmCount + FILM_COUNT_PER_STEP)
       .forEach((film) => {
@@ -103,8 +97,7 @@ export default class FilmsPresenter {
     this.#renderedFilmCount += FILM_COUNT_PER_STEP;
 
     if (this.#renderedFilmCount >= this.#films.length) {
-      this.#showMoreView.element.remove();
-      this.#showMoreView.removeElement();
+      remove(this.#showMoreView);
     }
   };
 }
