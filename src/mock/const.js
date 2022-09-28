@@ -87,4 +87,17 @@ const titles = [
   'Why Stop Now?',
 ];
 
-export {FILM_COUNT, NAME_COUNT, MAX_COMMENTS_ON_FILM, FILM_COUNT_PER_STEP, description, comment, countries, DaysDuration, YearsDuration, titles, surnames, names, posters, Rating, AgeRating, Runtime, GenreCount, genres, emotions};
+const Filter = [
+  'all',
+  'watchlist',
+  'history',
+  'favorites'
+];
+
+const Sorting = {
+  DEFAULT: 'default',
+  DATE: 'date',
+  RATING: 'rating',
+};
+
+export {FILM_COUNT, NAME_COUNT, MAX_COMMENTS_ON_FILM, FILM_COUNT_PER_STEP,Filter, Sorting, description, comment, countries, DaysDuration, YearsDuration, titles, surnames, names, posters, Rating, AgeRating, Runtime, GenreCount, genres, emotions};
